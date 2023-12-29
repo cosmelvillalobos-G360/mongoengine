@@ -49,7 +49,8 @@ class BaseDict(dict):
         BaseDocument = _import_class("BaseDocument")
 
         if isinstance(instance, BaseDocument):
-            self._instance = weakref.proxy(instance)
+            # self._instance = weakref.proxy(instance)
+            self._instance = instance
         self._name = name
         super().__init__(dict_items)
 
@@ -95,7 +96,8 @@ class BaseDict(dict):
     setdefault = mark_as_changed_wrapper(dict.setdefault)
 
     def _mark_as_changed(self, key=None):
-        if hasattr(self._instance, "_mark_as_changed"):
+        if self._instance is not None and hasattr(self._instance, "_mark_as_changed"):
+            # if hasattr(self._instance, "_mark_as_changed"):
             if key:
                 self._instance._mark_as_changed(f"{self._name}.{key}")
             else:
@@ -113,7 +115,8 @@ class BaseList(list):
         BaseDocument = _import_class("BaseDocument")
 
         if isinstance(instance, BaseDocument):
-            self._instance = weakref.proxy(instance)
+            # self._instance = weakref.proxy(instance)
+            self._instance = instance
         self._name = name
         super().__init__(list_items)
 
